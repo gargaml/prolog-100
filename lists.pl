@@ -53,10 +53,10 @@ my_flatten([H|T],B) :-
 
 eliminate([],[]).
 
-eliminate([],_,[]).
-
 eliminate([H|T],[H|R]) :-
     eliminate(T,H,R).
+
+eliminate([],_,[]).
 
 eliminate([H|T],H,R) :-
     eliminate(T,H,R).
@@ -64,3 +64,27 @@ eliminate([H|T],H,R) :-
 eliminate([H|T],I,[H|R]) :-
     H \= I,
     eliminate(T,H,R).
+
+pack([],[]).
+
+pack([X],[[X]]).
+
+pack([H|T],[[H|[H|TR]]|R]) :-
+    pack(T,[[H|TR]|R]).
+    
+pack([H|T],[[H]|[[I|TR]|R]]) :-
+    pack(T,[[I|TR]|R]),
+    H \= I.
+
+encode([],[]).
+
+encode([X],[[X,1]]).
+
+encode([H|T],[[H,M]|R]) :-
+    encode(T,[[H,N]|R]),
+    M is N+1.
+    
+encode([H|T],[[H,1]|[[I,N]|R]]) :-
+    encode(T,[[I,N]|R]),
+    H \= I.
+
