@@ -88,3 +88,21 @@ encode([H|T],[[H,1]|[[I,N]|R]]) :-
     encode(T,[[I,N]|R]),
     H \= I.
 
+dupli([],[]).
+
+dupli([H|T],[H|[H|R]]) :-
+    dupli(T,R).
+
+build(_,0,[]).
+
+build(X,N,[X|R]) :-
+    N \= 0,
+    M is N - 1,
+    build(X,M,R).
+
+dupli2([],_,[]).
+
+dupli2([H|T],N,S) :-
+    dupli2(T,N,R),
+    build(H,N,L),
+    append(L,R,S).
