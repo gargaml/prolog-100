@@ -106,3 +106,62 @@ dupli2([H|T],N,S) :-
     dupli2(T,N,R),
     build(H,N,L),
     append(L,R,S).
+
+dropN([],_,[]).
+
+dropN([_|T],1,T).
+
+dropN([H|T],N,[H|R]) :-
+    M is N - 1,
+    dropN(T,M,R).
+
+drop([],_,[]).
+
+drop([H|T],N,R) :-
+    drop([H|T],N,N,R).
+
+drop([],_,_,[]).
+
+drop([_|T],1,P,R) :-
+    drop(T,P,P,R).
+
+drop([H|T],N,P,[H|R]) :-
+    N \= 1,
+    M is N - 1,
+    drop(T,M,P,R).
+
+split([],_,[],[]).
+
+split(L,0,[],L).
+
+split([H|T],N,[H|L1],L2) :-
+    N \= 0,
+    M is N - 1,
+    split(T,M,L1,L2).
+
+slice([],L,U,[]).
+
+slice([H|T],L,U,R) :-
+    slice([H|T],1,L,U,R).
+
+slice([],_,_,_,[]).
+
+slice([H|_],I,_,I,[H]).
+
+slice([H|T],I,L,U,[H|R]) :-
+    I >= L,
+    J is I + 1,
+    slice(T,J,L,U,R).
+
+slice([H|T],I,L,U,R) :-
+    I < L,
+    J is I + 1,
+    slice(T,J,L,U,R).
+
+/* modify rotate with the mod predicate to consider negative N */
+
+rotate(L,N,R) :-
+    length(L,Lth),
+    split(L,N,A,B),
+    append(B,A,R).
+    
